@@ -2,7 +2,8 @@
 
 ## _Concessionária – Cadastro de Veículos_
 
-- Chassi Marca
+- Chassi
+- Marca
 - Quantidade
 - Preço
 - Cor
