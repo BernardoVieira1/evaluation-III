@@ -18,8 +18,7 @@ struct Carro
 |   Definindo funções
 */
 
-void Menu();
-void CriarArquivo(char *NArquivo);
+int Menu();
 void Cadastrarveiculo();
 
 #endif
