@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <cstdlib>
 #include <stdio.h>
+#include <string.h>
 #include <iostream>
 #include <fstream>
 
@@ -16,36 +17,54 @@ int TAM;
     Função para Criar arquivo
 */
 
-void CriarArquivo(char *NArquivo)
+void AbrirArquivo(char *NArquivo)
 {
   arquivo = fopen(NArquivo, "ab");
   if (arquivo != NULL)
   {
-    cout << "Arquivo criado com sucesso";
+    cout << "\nArquivo aberto com sucesso";
   }
   else
   {
-    cout << "Erro ao criar o arquivo";
+    cout << "\nFalha ao abrir arquivo";
   }
-  fclose(arquivo);
 }
 
 int main()
 {
-  int opc;
+  int opc, n, TAM, veiculo, reg;
+  char CHASS[20];
   do
   {
+    TAM = CriarArquivo(arquivo, car);
     opc = Menu();
     switch (opc)
     {
     case 1:
-      cout << "5";
+      AbrirArquivo("dados.bin");
+      cout << "\nQuantos carros deseja cadastrar? ";
+      cin >> n;
+      CadastrarVeiculo(arquivo, car, TAM, n);
+      // fclose(arquivo);
       break;
     case 2:
-      cout << "5";
+      TAM = CriarArquivo(arquivo, car);
+      for (int i = 0; i < TAM; i++)
+      {
+        MostrarVeiculos(car[100], i);
+      }
+      // system("\npause");
       break;
     case 3:
-      cout << "5";
+      cout << "\n Digite o chassi para a Busca: ";
+      cin >> CHASS;
+      reg = BuscarVeiculo(arquivo, car, CHASS);
+      MostrarVeiculos(car[reg], reg);
+      // system("pause");
+
+      // cout << "Digite o chassi do carro";
+      // cin >> chassi[20];
+      // veiculo = BuscarVeiculo(arquivo, car, chassi);
       break;
     case 4:
       cout << "5";
@@ -62,5 +81,5 @@ int main()
       break;
     }
 
-  } while (opc != 1);
+  } while (opc != 6);
 }

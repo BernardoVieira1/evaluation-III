@@ -19,6 +19,9 @@ struct Carro
 */
 
 int Menu();
-void Cadastrarveiculo();
+int CriarArquivo(FILE *arquivo, Carro car2[100]);
+void CadastrarVeiculo(FILE *arquivo, Carro car2[100], int pos, int n);
+void MostrarVeiculos(Carro car0, int i);
+int BuscarVeiculo(FILE *arquivo, Carro car[100], char CHASSI[20]);
 
 #endif
