@@ -4,82 +4,115 @@
 #include <string.h>
 #include <iostream>
 #include <fstream>
+#include <locale.h>
 
 #include "funcoes.h"
 
 using namespace std;
 
-Carro car[100];
-FILE *arquivo;
+Veiculo vei[100];
+FILE *arq;
 int TAM;
 
 /*
-    Função para Criar arquivo
+  FUNÇÃO PARA CRIAR ARQUIVO
 */
 
-void AbrirArquivo(char *NArquivo)
+void CriarArquivo(char *NArquivo)
 {
-  arquivo = fopen(NArquivo, "ab");
-  if (arquivo != NULL)
+  arq = fopen(NArquivo, "ab");
+  if (arq != NULL)
   {
-    cout << "\nArquivo aberto com sucesso";
-  }
-  else
-  {
-    cout << "\nFalha ao abrir arquivo";
+    printf("\n  [ O ARQUIVO FOI ABERTO ]\n");
   }
 }
 
 int main()
 {
-  int opc, n, TAM, veiculo, reg;
+
+  setlocale(LC_ALL, "portuguese");
+
+  int opc, opc2, opc3, n, i, reg, senha;
   char CHASS[20];
+  TAM = IniciarArquivo(arq, vei);
+
+  system("color f0");
+
   do
   {
-    TAM = CriarArquivo(arquivo, car);
     opc = Menu();
     switch (opc)
     {
     case 1:
-      AbrirArquivo("dados.bin");
-      cout << "\nQuantos carros deseja cadastrar? ";
+      CriarArquivo("dados.bin");
+      cout << "\nDIGITE A QUANTIDADE DE VEÍCULOS PARA CADASTRAR: ";
       cin >> n;
-      CadastrarVeiculo(arquivo, car, TAM, n);
-      // fclose(arquivo);
+      Cadastrar(arq, vei, TAM, n);
+      fclose(arq);
       break;
     case 2:
-      TAM = CriarArquivo(arquivo, car);
-      for (int i = 0; i < TAM; i++)
+      system("cls");
+      TAM = IniciarArquivo(arq, vei);
+      cout << "\n-------------------------------------------------------------" << endl;
+      cout << " NUMERO DE REGISTROS NO BANCO DE DADOS: " << TAM << endl;
+      cout << "-------------------------------------------------------------" << endl;
+      for (i = 0; i < TAM; i++)
       {
-        MostrarVeiculos(car[100], i);
+        ExibirVeiculos(vei[i], i);
       }
-      // system("\npause");
+      cout << "\n";
+      system("pause");
       break;
     case 3:
-      cout << "\n Digite o chassi para a Busca: ";
+      cout << " -------------------------------------------------------------";
+      cout << "\n DIGITE O CHASSI PARA BUSCAR O VEÍCULO: ";
       cin >> CHASS;
-      reg = BuscarVeiculo(arquivo, car, CHASS);
-      MostrarVeiculos(car[reg], reg);
-      // system("pause");
-
-      // cout << "Digite o chassi do carro";
-      // cin >> chassi[20];
-      // veiculo = BuscarVeiculo(arquivo, car, chassi);
+      reg = BuscarVeiculo(arq, vei, CHASS);
+      if (reg != -1)
+      {
+        ExibirVeiculos(vei[reg], reg);
+        system("pause");
+      }
       break;
     case 4:
-      cout << "5";
+      opc2 = MenuEditar();
+      EditarCadastro(arq, vei, opc2);
       break;
     case 5:
-      cout << "5";
+      cout << "\n DIGITE O CHASSI DO VEÍCULO QUE DESEJA EXCLUIR: ";
+      cin >> CHASS;
+      ExcluirVeiculo(arq, vei, CHASS);
+      fclose(arq);
       break;
     case 6:
-      cout << "Programa finalizado";
+      opc2 = MenuAvancado();
+      if (opc2 == 1)
+      {
+        cout << "Digite a senha: ";
+        cin >> senha;
+        if (senha == 17)
+        {
+          arq = fopen("dados.bin", "w");
+        }
+      }
+      if (opc2 == 2)
+      {
+        opc3 = MenuAparencia();
+        if (opc3 == 1)
+        {
+          system("color 0f");
+        }
+        else
+        {
+          system("color f0");
+        }
+      }
       break;
-
+    case 7:
+      break;
     default:
-      cout << "Opcao invalida!";
+      cout << "O VALOR INFORMADO É INVÁLIDO!";
       break;
     }
-
-  } while (opc != 6);
+  } while (opc != 7);
 }
